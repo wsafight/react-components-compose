@@ -1,9 +1,15 @@
-import React, { FC, ComponentProps } from 'react';
+import React, {
+  FC,
+  ComponentProps,
+  Component,
+} from 'react';
 
-type reactComponent = FC<any> | (new(props?: ComponentProps<any>) => React.Component<any, any>)
+type ReactComposeComponentType =
+  FC<any> |
+  (new (props?: ComponentProps<any>) => Component<any, any>)
 
-const reactComponse = (
-  [Component, ...components]: reactComponent[],
+const reactCompose = (
+  [Component, ...components]: ReactComposeComponentType[],
   [props, ...childrenProps]: ComponentProps<any>[] = []
 ) => {
   if (!Component) {
@@ -12,24 +18,21 @@ const reactComponse = (
 
   return (
     <Component {...props ?? {}}>
-      {reactComponse(components, childrenProps ?? [])}
+      {reactCompose(components, childrenProps ?? [])}
     </Component>
   )
 }
 
-interface ComponentWithProperty {
-  component: reactComponent
-  props: ComponentProps<any>
-}
+type ComponentWithProperty  = [ReactComposeComponentType,  ComponentProps<any>];
 
-const reactComponseBindProps = (
+const reactComposeBindProps = (
   [first, ...rest]: ComponentWithProperty[],
 ) => {
   if (!first) {
     return null
   }
 
-  const { component: Component, props } = first
+  const [Component, props] = first
 
   if (!Component) {
     return null
@@ -37,15 +40,15 @@ const reactComponseBindProps = (
 
   return (
     <Component {...props ?? {}}>
-      {reactComponseBindProps(rest)}
+      {reactComposeBindProps(rest)}
     </Component>
   )
 }
 
 
 export {
-  reactComponse,
-  reactComponseBindProps,
+  reactCompose,
+  reactComposeBindProps
 }
 
-export default reactComponse
+export default reactCompose
