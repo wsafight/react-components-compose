@@ -25,7 +25,7 @@ yarn add react-components-compose
 下面将会展示 outer middle 以及 inner
 
 ```ts
-import reactCompose from 'react-components-compose'
+import reactComponentsCompose from 'react-components-compose'
 
 const Outer: React.FC<any> = (props) => {
   // children​ 指向的是当前 ​react element​ 的子节点
@@ -57,7 +57,7 @@ export const SimpleShow = () => {
   const components = [Outer, Middle, Inner]
   return (
     <div>
-      {reactCompose(components)}
+      {reactComponentsCompose(components)}
     </div>
   );
 };
@@ -66,7 +66,7 @@ export const SimpleShow = () => {
 ### 调整 props
 
 ```ts
-import { reactCompose } from 'react-components-compose';
+import { reactComponentsCompose } from 'react-components-compose';
 
 const Outer: React.FC<any> = (props) => {
   const { children, data } = props;
@@ -96,14 +96,11 @@ const Inner: React.FC<any> = (props) => {
 
 
 export const SimpleShowWithProps = () => {
-  const components = [Outer, Middle, Inner]
+   // 依次传递组件的props
+  const components = [[Outer, {props: 123}], Middle, [Inner, {data: 456}]]
   return (
     <div>
-      {reactCompose(components, [
-        // 依次传递组件的props
-        {data: 123}, 
-        null, 
-        {data: 456}])}
+      {reactComponentsCompose(components)}
     </div>
   );
 };
@@ -112,7 +109,7 @@ export const SimpleShowWithProps = () => {
 ## 添加事件通知
 
 ```ts
-import { reactCompose, reactComposeBindProps } from 'react-components-compose'
+import { reactComponentsCompose } from 'react-components-compose'
 import mitt from 'mitt';
 
 // 没有其他功能，负责事件清除
@@ -178,24 +175,10 @@ const Inner = (props) => {
 
 
 export const ArrayShowWithEvent1 = () => {
-    const components = [EventClear, OuterClass, Inner]
+    const components = [[EventClear, {bus: mitt()}], OuterClass, [Inner, {data: 'times'}]]
     return (
         <div>
-            {reactCompose(components, [{ bus: mitt() }, null, { data: 'times' }])}
-        </div>
-    );
-};
-
-// 等同于
-export const ArrayShowWithEvent2 = () => {
-    const components = [
-      [EventClear, { bus: mitt() }], 
-      [OuterClass],
-      [Inner, { data: 'times' }]
-    ]
-    return (
-        <div>
-            {reactComposeBindProps(components)}
+            {reactComponentsCompose(components)}
         </div>
     );
 };
@@ -212,7 +195,7 @@ export const ArrayShowWithEvent3 = () => {
     ]
     return (
         <div>
-            {reactComposeBindProps(components)}
+            {reactComponentsCompose(components)}
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { reactCompose, reactComposeBindProps } from '../.';
+import { reactComponentsCompose } from '../.';
 import mitt from 'mitt';
 
 const Event = (props) => {
@@ -105,12 +105,12 @@ const Inner = (props) => {
 export const ArrayShowWithEvent = () => {
     const bus = mitt();
     const components = [ 
-      [OuterClass, {bus}],
+        [OuterClass, {bus}],
       [Inner, { data: 'times', bus }]
     ]
     return (
         <div>
-            {reactComposeBindProps(components)}
+            {reactComponentsCompose(components)}
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { reactCompose } from '../.';
+import { reactComponentsCompose } from '../.';
 
 const Outer: React.FC<any> = (props) => {
   const { children, data } = props;
@@ -36,7 +36,7 @@ export const ArrayShow = () => {
   const components = [Outer, Middle, Inner]
   return (
     <div>
-      {reactCompose(components)}
+      {reactComponentsCompose(components)}
     </div>
   );
 };

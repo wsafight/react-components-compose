@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { reactCompose } from '../.';
+import { reactComponentsCompose } from '../.';
 
 const Outer: React.FC<any> = (props) => {
   const { children, data } = props;
@@ -21,7 +21,25 @@ const Middle: React.FC<any> = (props) => {
   </>
 }
 
-const Inner = (props) => {
+// TODO
+// const Inner = (props) => {
+//   const { data } = props;
+
+//   const [time, setTime] = React.useState(0)
+
+//   const handleClick = () => {
+//     setTime(time + 1);
+//   }
+
+//   return [
+//     <div>{time} {data}</div>,
+//     <div onClick={handleClick}>inner</div>,
+//     <div>inner2</div>,
+//     <div>inner3</div>,
+//   ]
+// }
+
+const Inner: React.FC<any> = (props) => {
   const { data } = props;
 
   const [time, setTime] = React.useState(0)
@@ -30,20 +48,21 @@ const Inner = (props) => {
     setTime(time + 1);
   }
 
-  return [
-    <div>{time} {data}</div>,
-    <div onClick={handleClick}>inner</div>,
-    <div>inner2</div>,
-    <div>inner3</div>,
-  ]
+  return <>
+    <div>{time} {data}</div>
+    <div onClick={handleClick}>inner</div>
+    <div>inner2</div>
+    <div>inner3</div>
+    </>
 }
 
 
+
 export const ArrayShowWithState = () => {
-  const components = [Outer, Middle, Inner]
+  const components = [Outer, Middle, [Inner, {data: 'times'}]]
   return (
     <div>
-      {reactCompose(components, [null, null, {data: 'times'}])}
+      {reactComponentsCompose(components)}
     </div>
   );
 };

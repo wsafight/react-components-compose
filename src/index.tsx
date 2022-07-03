@@ -1,54 +1,43 @@
-import React, {
-  FC,
-  ComponentProps,
-  Component,
-} from 'react';
+import React from 'react';
+import { isReactComponent } from './utils';
 
-type ReactComposeComponentType =
-  FC<any> |
-  (new (props?: ComponentProps<any>) => Component<any, any>)
+type ReactComponentWithProperty  = [any,  Record<string, any>];
 
-const reactCompose = (
-  [Component, ...components]: ReactComposeComponentType[],
-  [props, ...childrenProps]: ComponentProps<any>[] = []
-) => {
-  if (!Component) {
-    return null
-  }
-
-  return (
-    <Component {...props ?? {}}>
-      {reactCompose(components, childrenProps ?? [])}
-    </Component>
-  )
-}
-
-type ComponentWithProperty  = [ReactComposeComponentType,  ComponentProps<any>];
-
-const reactComposeBindProps = (
-  [first, ...rest]: ComponentWithProperty[],
+const reactComponentsCompose = (
+  [first, ...rest]: (any | ReactComponentWithProperty)[],
 ) => {
   if (!first) {
     return null
   }
 
-  const [Component, props] = first
+  let Component: any
+  let props = {}
+
+  if (Array.isArray(first)) {
+    Component = first[0]
+    props = first[1] ?? {}
+  } else {
+    Component = first
+  }
 
   if (!Component) {
     return null
   }
 
+  if (!isReactComponent(Component)) {
+    return null
+  }
+
   return (
-    <Component {...props ?? {}}>
-      {reactComposeBindProps(rest)}
+    <Component {...props}>
+      {reactComponentsCompose(rest)}
     </Component>
   )
 }
 
 
 export {
-  reactCompose,
-  reactComposeBindProps
+  reactComponentsCompose
 }
 
-export default reactCompose
+export default reactComponentsCompose

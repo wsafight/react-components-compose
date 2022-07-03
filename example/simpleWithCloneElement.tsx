@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { reactCompose } from '../.';
+import { reactComponentsCompose } from '../.';
 
 const Outer: React.FC<any> = (props) => {
   const { children, data } = props;
@@ -33,10 +33,10 @@ const Inner: React.FC<any> = (props) => {
 
 
 export const SimpleShowWithCloneElement = () => {
-  const components = [Outer, Middle, Inner]
+  const components = [[Outer, {data: 123}], Middle, [Inner, {data: 456}]]
   return (
     <div>
-      {reactCompose(components, [{data: 123}, null, {data: 456}])}
+      {reactComponentsCompose(components)}
     </div>
   );
 };

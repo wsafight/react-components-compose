@@ -27,7 +27,7 @@ yarn add react-components-compose
 The outer middle and inner will be shown below
 
 ```jsx
-import reactCompose from 'react-components-compose'
+import reactComponentsCompose from 'react-components-compose'
 
 const Outer = (props) => {
   // children​ points to the child nodes of the current ​react element​
@@ -58,7 +58,7 @@ export const SimpleShow = () => {
   const components = [Outer, Middle, Inner]
   return (
     <div>
-      {reactCompose(components)}
+      {reactComponentsCompose(components)}
     </div>
   );
 };
@@ -67,7 +67,7 @@ export const SimpleShow = () => {
 ### Adjust props
 
 ```jsx
-import { reactCompose } from "react-components-compose";
+import { reactComponentsCompose } from "react-components-compose";
 
 const Outer = (props) => {
   const { children, data } = props;
@@ -102,15 +102,11 @@ const Inner = (props) => {
 };
 
 export const SimpleShowWithProps = () => {
-  const components = [Outer, Middle, Inner];
+  // Pass component props in turn
+  const components = [[Outer, {data: 123}], Middle, [Inner, {data: 456}]];
   return (
     <div>
-      {reactCompose(components, [
-        // Pass component props in turn
-        { data: 123 },
-        null,
-        { data: 456 },
-      ])}
+      {reactComponentsCompose(components)}
     </div>
   );
 };
@@ -119,7 +115,7 @@ export const SimpleShowWithProps = () => {
 ## Add event notification
 
 ```ts
-import { reactCompose, reactComposeBindProps } from "react-components-compose";
+import { reactComponentsCompose } from "react-components-compose";
 import mitt from "mitt";
 
 // No other functions, only responsible for event clearing
@@ -187,24 +183,10 @@ const Inner = (props) => {
 };
 
 export const ArrayShowWithEvent1 = () => {
-  const components = [EventClear, OuterClass, Inner];
+  const components = [[EventClear, {bus: mitt()}], OuterClass, [Inner, {data: times}]];
   return (
     <div>
-      {reactCompose(components, [{ bus: mitt() }, null, { data: "times" }])}
-    </div>
-  );
-};
-
-// Equivalent to
-export const ArrayShowWithEvent2 = () => {
-  const components = [
-    [EventClear, { bus: mitt() }],
-    [OuterClass],
-    [Inner, { data: "times" }],
-  ];
-  return (
-    <div>
-      {reactComposeBindProps(components)}
+      {reactComponentsCompose(components)}
     </div>
   );
 };
@@ -221,7 +203,7 @@ export const ArrayShowWithEvent3 = () => {
   ];
   return (
     <div>
-      {reactComposeBindProps(components)}
+      {reactComponentsCompose(components)}
     </div>
   );
 };
