@@ -22,6 +22,28 @@ yarn add react-components-compose
 
 ## Usage
 
+### show
+
+```jsx
+  <Router history={history}>
+    <ThemeProvider theme={theme}>
+      <I18nextProvider i18n={i18n}>
+        <ReduxProvider store={store}>
+          <App />
+        </ReduxProvider>
+      </I18nextProvider>
+    </ThemeProvider>
+  </Router>
+
+reactComponentsCompose([
+  [Router, { history }],
+  [ThemeProvider, { theme }]
+  [ReduxProvider, { store }]
+  App,
+])
+```
+
+
 ### Simple component display
 
 The outer middle and inner will be shown below

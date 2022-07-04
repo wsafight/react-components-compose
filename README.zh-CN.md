@@ -20,6 +20,27 @@ yarn add react-components-compose
 
 ## 用法
 
+### 展示
+
+```jsx
+  <Router history={history}>
+    <ThemeProvider theme={theme}>
+      <I18nextProvider i18n={i18n}>
+        <ReduxProvider store={store}>
+          <App />
+        </ReduxProvider>
+      </I18nextProvider>
+    </ThemeProvider>
+  </Router>
+
+reactComponentsCompose([
+  [Router, { history }],
+  [ThemeProvider, { theme }]
+  [ReduxProvider, { store }]
+  App,
+])
+```
+
 ### 简单的组件展示
 
 下面将会展示 outer middle 以及 inner
